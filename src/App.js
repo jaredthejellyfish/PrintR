@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState, useEffect } from "react";
+
+import PrintForm from "./components/PrintForm";
+import ProfileBadge from "./components/ProfileBadge";
+
 
 function App() {
+  const [isStarting, setIsStarting] = useState(true);
+
+  function someRequest() {
+    //Simulates a request; makes a "promise" that'll run for 2.5 seconds
+    return new Promise((resolve) => setTimeout(() => resolve(), 2000));
+  }
+
+  useEffect(() => {
+    someRequest().then(() => {
+      const loaderElement = document.querySelector(".loader-container");
+      if (loaderElement) {
+        loaderElement.remove();
+        setIsStarting(!isStarting);
+      }
+    });
+  });
+
+  if (isStarting) {
+    return null;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PrintForm />
+      <ProfileBadge />
     </div>
   );
 }
