@@ -1,12 +1,15 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
+
+
 import PrintForm from "./components/PrintForm";
 import ProfileBadge from "./components/ProfileBadge";
 
-
 function App() {
   const [isStarting, setIsStarting] = useState(true);
+
+
 
   function someRequest() {
     //Simulates a request; makes a "promise" that'll run for 2.5 seconds
@@ -28,10 +31,10 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <PrintForm />
-      <ProfileBadge />
-    </div>
+      <div className="App">
+        <PrintForm />
+        <ProfileBadge />
+      </div>
   );
 }
 

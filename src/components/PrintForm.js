@@ -1,23 +1,45 @@
 import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
+import key from "../key.json";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
+
 const PrintForm = () => {
   const { isAuthenticated, user } = useAuth0();
-
-  console.log(user)
-
   const [text, setText] = useState("");
   const [placeholder, setPlaceholder] = useState(
     isAuthenticated
       ? "Enter your text here. Press Shift+Enter or submit to print it."
       : "Please log in to print. You can do so by clicking on the profile icon."
   );
+  const [numConfetti, setNumConfetti] = useState(0);
 
-
-  const key = "3t8okfrLoqcDP1ReDVQRHpALXkZB0wmZ";
+  const { width, height } = useWindowSize();
 
   const handleChange = (event) => {
     setText(event.target.value);
+  };
+
+  const inputValidations = () => {
+    if (text.length === 0) {
+      setPlaceholder("Please enter some text.");
+      return false;
+    }
+
+    if (text.length > 2000) {
+      alert("Please enter less than 2000 characters.");
+      return false;
+    }
+
+    if (!isAuthenticated) {
+      alert(
+        "Please log in to print. You can do so by clicking on the profile icon."
+      );
+      return false;
+    }
+
+    return true;
   };
 
   const handleKeyPress = (e) => {
@@ -31,14 +53,17 @@ const PrintForm = () => {
     );
   };
 
+  const confettiTimeHandler = () => {
+    setNumConfetti(250);
+    setTimeout(() => {
+      setNumConfetti(0);
+    }, 2000);
+  };
+
   const handleSubmit = () => {
     if (text.length === 0) return;
-    if (!isAuthenticated) {
-      alert(
-        "Please log in to print. You can do so by clicking on the profile icon."
-      );
-      return;
-    }
+    if (!inputValidations()) return;
+
     setText("");
     setPlaceholder("Sending...");
     fetch(
@@ -48,12 +73,18 @@ const PrintForm = () => {
       {
         method: "GET",
         headers: {
-          "x-PrintRAPI-key": key,
+          "x-PrintRAPI-key": key.key,
         },
       }
-    ).then(() => {
-      setPlaceholder("Sent!");
-    });
+    )
+      .then(() => {
+        setPlaceholder("Sent!");
+
+        confettiTimeHandler();
+      })
+      .catch(() => {
+        setPlaceholder("Error sending. Please try again.");
+      });
   };
 
   return (
@@ -69,6 +100,8 @@ const PrintForm = () => {
         />
         <button onClick={handleSubmit}>Print‎ ‎ ‎ 🖨️</button>
       </div>
+
+      <Confetti numberOfPieces={numConfetti} width={width} height={height} />
     </div>
   );
 };
