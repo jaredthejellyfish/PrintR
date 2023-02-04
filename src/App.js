@@ -1,8 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
-
-
 import PrintForm from "./components/PrintForm";
 import ProfileBadge from "./components/ProfileBadge";
 

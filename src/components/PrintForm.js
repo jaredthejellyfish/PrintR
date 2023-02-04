@@ -57,7 +57,7 @@ const PrintForm = () => {
     setNumConfetti(250);
     setTimeout(() => {
       setNumConfetti(0);
-    }, 2000);
+    }, 1000);
   };
 
   const handleSubmit = () => {
