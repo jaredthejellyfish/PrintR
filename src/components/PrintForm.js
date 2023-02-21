@@ -73,7 +73,7 @@ const PrintForm = () => {
       {
         method: "GET",
         headers: {
-          "x-PrintRAPI-key": key.key,
+          "x-printrapi-key": key.key,
         },
       }
     )
