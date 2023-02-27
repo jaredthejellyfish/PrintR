@@ -68,7 +68,7 @@ const PrintForm = () => {
     setPlaceholder("Sending...");
     fetch(
       `https://print.jellyhost.eu/pmarkdown?doc=${encodeURIComponent(
-        `# ${user.name}:\n\n` + text
+        `# ${new Date()} - ${user.name}:\n\n` + text
       )}&cut=True`,
       {
         method: "GET",
